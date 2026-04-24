@@ -1,36 +1,75 @@
 # 폴더 구조 템플릿
 
+## 업무형 SaaS 기본 구조
+
 ```text
-project-root/
-  docs/
+project-name/
   apps/
-    web/
-    mobile-web/
-    admin/
-    native-app/          # 필요 시 별도 레포로 분리 가능
-  services/
-    api/
-    batch/
-    worker/
+    web-pc/
+    web-mobile/
+    mobile-app/
+    desktop-app/
+
   packages/
-    domain/
-    application/
-    infrastructure/
-    ui/
-    shared/
-  tests/
-    e2e/
-    integration/
+    shared-ui/
+    shared-api/
+    shared-types/
+    design-system/
+    feature-signature/
+    feature-pdf-coordinate/
+    feature-storage/
+    feature-message/
+
+  server/
+    apis/
+    db/
+    services/
+    auth/
+    permissions/
+    storage/
+    jobs/
+
+  docs/
+    architecture.md
+    feature-list.md
+    design-system.md
+    development-plan.md
 ```
 
-## 설계 의도
+## 단일 Next.js 스타터 구조
 
-- 실행 단위(`apps`, `services`)와 재사용 단위(`packages`)를 분리한다.
-- 도메인 규칙은 `packages/domain` 중심으로 유지한다.
-- 인프라 세부 구현은 `packages/infrastructure`에 한정한다.
+```text
+project-name/
+  src/
+    app/
+    components/
+    features/
+    server/
+    lib/
+    styles/
 
-## 적용 규칙
+  prisma/
+  docs/
+  scripts/
+```
 
-- 기능 추가 시 먼저 어느 레이어 변경인지 명시한다.
-- 공통 패키지 변경 시 영향 범위를 문서화한다.
-- 플랫폼 전용 코드는 공통 패키지로 올리지 않는다.
+## Spring Boot + Next.js 구조
+
+```text
+project-name/
+  backend/
+    src/
+    build.gradle or pom.xml
+
+  frontend/
+    web/
+
+  docs/
+```
+
+## 기술자산 적용 방식
+
+- 새 프로젝트는 처음부터 필요한 플랫폼 구조를 선택한다.
+- 기능은 feature-library에서 선택한다.
+- 공통 디자인은 design-system 기준을 따른다.
+- 기능별 코드는 원본 프로젝트에서 직접 복사하지 않고 정리된 적용 지시문 기준으로 붙인다.
