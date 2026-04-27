@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>신규 프로젝트 스타터 생성기</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --surface: #ffffff;
+      --surface-soft: #f1f5f9;
+      --text: #111827;
+      --muted: #64748b;
+      --border: #dbe3ef;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --danger: #dc2626;
+      --success: #16a34a;
+      --warning: #d97706;
+      --shadow: 0 14px 35px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      color: white;
+      padding: 34px 20px;
+    }
+
+    .header-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    header h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 42px);
+      letter-spacing: -0.04em;
+    }
+
+    header p {
+      max-width: 780px;
+      margin: 0;
+      color: #dbeafe;
+      font-size: 16px;
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px 18px 60px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(360px, 0.9fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-title {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-soft);
+    }
+
+    .panel-title h2 {
+      margin: 0 0 4px;
+      font-size: 18px;
+    }
+
+    .panel-title p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .section {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section:last-child { border-bottom: 0; }
+
+    .section h3 {
+      margin: 0 0 14px;
+      font-size: 16px;
+    }
+
+    label {
+      display: block;
+      margin: 14px 0 6px;
+      color: #334155;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    input[type="text"], textarea, select {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 13px;
+      font-size: 15px;
+      background: white;
+      color: var(--text);
+      outline: none;
+    }
+
+    textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .check-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .check-card {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 11px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      user-select: none;
+    }
+
+    .check-card input { margin: 0; }
+
+    .hint {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .actions {
+      position: sticky;
+      bottom: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid var(--border);
+      z-index: 10;
+    }
+
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.16s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover { background: var(--primary-dark); }
+
+    .btn-subtle {
+      background: var(--surface-soft);
+      color: #0f172a;
+      border: 1px solid var(--border);
+    }
+
+    .result-card {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .result-card:last-child { border-bottom: 0; }
+
+    .result-card h3 {
+      margin: 0 0 10px;
+      font-size: 16px;
+    }
+
+    .result-card ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: #e0ecff;
+      color: #1d4ed8;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 12px;
+      line-height: 1.5;
+      overflow-x: auto;
+    }
+
+    .empty {
+      padding: 30px 20px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: #0f172a;
+      color: white;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: 0.2s ease;
+      z-index: 99;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 920px) {
+      .layout { grid-template-columns: 1fr; }
+      .check-grid, .grid-2 { grid-template-columns: 1fr; }
+      .actions { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <h1>신규 프로젝트 스타터 생성기</h1>
+      <p>일반적인 말로 프로젝트를 설명하면, 아키텍처·폴더 구조·권한 구조·Figma 프롬프트·Cursor 개발 지시문을 바로 생성합니다.</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="layout">
+      <section class="panel" aria-label="입력 폼">
+        <div class="panel-title">
+          <h2>1. 프로젝트 정보 입력</h2>
+          <p>개발 용어를 몰라도 괜찮습니다. 만들고 싶은 서비스를 편하게 적어주세요.</p>
+        </div>
+
+        <div class="section">
+          <h3>기본 설명</h3>
+          <label for="projectName">서비스 이름</label>
+          <input id="projectName" type="text" placeholder="예: 병원 서류 접수 앱" />
+
+          <label for="oneLine">한 줄 설명</label>
+          <input id="oneLine" type="text" placeholder="예: 고객이 모바일에서 서류를 제출하고 담당자가 확인하는 서비스" />
+
+          <label for="problem">왜 만들려고 하나요?</label>
+          <textarea id="problem" placeholder="예: 지금은 카카오톡과 엑셀로 관리해서 고객 자료를 찾기 어렵다."></textarea>
+
+          <label for="domain">업종/분야</label>
+          <select id="domain">
+            <option value="일반 업무관리">일반 업무관리</option>
+            <option value="보험">보험</option>
+            <option value="부동산">부동산</option>
+            <option value="병원">병원</option>
+            <option value="학원">학원</option>
+            <option value="B2B 거래">B2B 거래</option>
+            <option value="지역 거래 플랫폼">지역 거래 플랫폼</option>
+            <option value="오디션/지원자 매칭">오디션/지원자 매칭</option>
+            <option value="에스크로/계약/검수">에스크로/계약/검수</option>
+            <option value="데이터 수집/분석">데이터 수집/분석</option>
+          </select>
+        </div>
+
+        <div class="section">
+          <h3>사용자와 권한</h3>
+          <label>누가 사용하나요?</label>
+          <div class="check-grid" data-group="users">
+            <label class="check-card"><input type="checkbox" value="관리자" /> 관리자</label>
+            <label class="check-card"><input type="checkbox" value="직원/담당자" /> 직원/담당자</label>
+            <label class="check-card"><input type="checkbox" value="팀장" /> 팀장</label>
+            <label class="check-card"><input type="checkbox" value="고객" /> 고객</label>
+            <label class="check-card"><input type="checkbox" value="판매자" /> 판매자</label>
+            <label class="check-card"><input type="checkbox" value="구매자" /> 구매자</label>
+            <label class="check-card"><input type="checkbox" value="파트너" /> 파트너</label>
+            <label class="check-card"><input type="checkbox" value="외부 전문가" /> 외부 전문가</label>
+          </div>
+
+          <label for="permissionText">권한은 어떻게 나뉘어야 하나요?</label>
+          <textarea id="permissionText" placeholder="예: 관리자는 전체를 보고, 담당자는 자기 고객만 보고, 고객은 자기 자료만 본다."></textarea>
+        </div>
+
+        <div class="section">
+          <h3>플랫폼</h3>
+          <label>어디에서 사용하나요?</label>
+          <div class="check-grid" data-group="platforms">
+            <label class="check-card"><input type="checkbox" value="PC 웹" /> PC 웹</label>
+            <label class="check-card"><input type="checkbox" value="모바일 웹" /> 모바일 웹</label>
+            <label class="check-card"><input type="checkbox" value="Android 앱" /> Android 앱</label>
+            <label class="check-card"><input type="checkbox" value="iPhone 앱" /> iPhone 앱</label>
+            <label class="check-card"><input type="checkbox" value="PC 설치형 프로그램" /> PC 설치형 프로그램</label>
+            <label class="check-card"><input type="checkbox" value="관리자 전용 웹" /> 관리자 전용 웹</label>
+            <label class="check-card"><input type="checkbox" value="고객 전용 화면" /> 고객 전용 화면</label>
+          </div>
+
+          <label for="firstPlatform">처음에 먼저 만들 것</label>
+          <select id="firstPlatform">
+            <option value="PC 관리자 화면부터">PC 관리자 화면부터</option>
+            <option value="모바일 고객 화면부터">모바일 고객 화면부터</option>
+            <option value="웹부터 만들고 앱은 나중에">웹부터 만들고 앱은 나중에</option>
+            <option value="PC와 모바일을 처음부터 같이 고려">PC와 모바일을 처음부터 같이 고려</option>
+          </select>
+        </div>
+
+        <div class="section">
+          <h3>필요 기능</h3>
+          <label>필요한 기능을 선택하세요.</label>
+          <div class="check-grid" data-group="features">
+            <label class="check-card"><input type="checkbox" value="고객 관리" /> 고객 관리</label>
+            <label class="check-card"><input type="checkbox" value="파일 업로드" /> 파일 업로드</label>
+            <label class="check-card"><input type="checkbox" value="고객별 파일함" /> 고객별 파일함</label>
+            <label class="check-card"><input type="checkbox" value="개인 메시지" /> 개인 메시지</label>
+            <label class="check-card"><input type="checkbox" value="전체 공지" /> 전체 공지</label>
+            <label class="check-card"><input type="checkbox" value="알림센터" /> 알림센터</label>
+            <label class="check-card"><input type="checkbox" value="손사인" /> 손사인</label>
+            <label class="check-card"><input type="checkbox" value="PDF 자동 작성" /> PDF 자동 작성</label>
+            <label class="check-card"><input type="checkbox" value="일정관리" /> 일정관리</label>
+            <label class="check-card"><input type="checkbox" value="팀 관리" /> 팀 관리</label>
+            <label class="check-card"><input type="checkbox" value="승인/검수" /> 승인/검수</label>
+            <label class="check-card"><input type="checkbox" value="엑셀 업로드" /> 엑셀 업로드</label>
+            <label class="check-card"><input type="checkbox" value="주문/발주" /> 주문/발주</label>
+            <label class="check-card"><input type="checkbox" value="통계/대시보드" /> 통계/대시보드</label>
+          </div>
+
+          <label for="mustHave">처음 버전에서 꼭 되어야 하는 것</label>
+          <textarea id="mustHave" placeholder="예: 고객이 파일을 제출하고 담당자가 확인할 수 있어야 한다."></textarea>
+
+          <label for="later">나중에 해도 되는 것</label>
+          <textarea id="later" placeholder="예: 결제, 고급 통계, 앱스토어 출시는 나중에"></textarea>
+        </div>
+
+        <div class="section">
+          <h3>디자인과 Figma</h3>
+          <label for="style">원하는 디자인 느낌</label>
+          <select id="style">
+            <option value="깔끔한 업무용 화면">깔끔한 업무용 화면</option>
+            <option value="밝은 SaaS 스타일">밝은 SaaS 스타일</option>
+            <option value="업무형 다크모드">업무형 다크모드</option>
+            <option value="고급스러운 B2B 스타일">고급스러운 B2B 스타일</option>
+            <option value="모바일 카드형 화면">모바일 카드형 화면</option>
+            <option value="고객이 쉽게 쓰는 단순한 화면">고객이 쉽게 쓰는 단순한 화면</option>
+          </select>
+
+          <label>Figma로 먼저 보고 싶은 것</label>
+          <div class="check-grid" data-group="figma">
+            <label class="check-card"><input type="checkbox" value="서비스 전체 구조도" /> 서비스 구조도</label>
+            <label class="check-card"><input type="checkbox" value="사용자 이동 흐름도" /> 사용자 흐름도</label>
+            <label class="check-card"><input type="checkbox" value="PC 화면 시안" /> PC 화면 시안</label>
+            <label class="check-card"><input type="checkbox" value="모바일 화면 시안" /> 모바일 화면 시안</label>
+            <label class="check-card"><input type="checkbox" value="클릭 흐름 프로토타입" /> 클릭 흐름</label>
+            <label class="check-card"><input type="checkbox" value="디자인 시스템 초안" /> 디자인 시스템</label>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn-primary" type="button" onclick="generateStarter()">결과 생성</button>
+          <button class="btn-subtle" type="button" onclick="copyMarkdown()">결과 복사</button>
+          <button class="btn-subtle" type="button" onclick="resetForm()">초기화</button>
+        </div>
+      </section>
+
+      <aside class="panel" aria-label="생성 결과">
+        <div class="panel-title">
+          <h2>2. 생성 결과</h2>
+          <p>아키텍처, 폴더 구조, Figma 프롬프트, Cursor 지시문이 여기에 나옵니다.</p>
+        </div>
+        <div id="result">
+          <div class="empty">입력 후 <strong>결과 생성</strong>을 누르세요.</div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <div id="toast" class="toast">복사되었습니다.</div>
+
+  <script>
+    let latestMarkdown = "";
+
+    function selected(group) {
+      return Array.from(document.querySelectorAll(`[data-group="${group}"] input:checked`)).map(el => el.value);
+    }
+
+    function value(id) {
+      return document.getElementById(id).value.trim();
+    }
+
+    function list(items, fallback = "미정") {
+      return items.length ? items.map(item => `<span class="badge">${escapeHtml(item)}</span>`).join("") : `<span class="badge">${fallback}</span>`;
+    }
+
+    function mdList(items) {
+      return items.length ? items.map(item => `- ${item}`).join("\n") : "- 미정";
+    }
+
+    function escapeHtml(text) {
+      return String(text).replace(/[&<>"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[ch]));
+    }
+
+    function recommendAssets(features) {
+      const assets = [];
+      if (features.some(f => ["파일 업로드", "고객별 파일함"].includes(f))) assets.push("storage-r2");
+      if (features.includes("개인 메시지")) assets.push("personal-message");
+      if (features.includes("손사인")) assets.push("signature");
+      if (features.includes("PDF 자동 작성")) assets.push("pdf-coordinate");
+      if (features.some(f => ["파일 업로드", "고객별 파일함"].includes(f))) assets.push("customer-claim");
+      if (features.includes("알림센터")) assets.push("notification");
+      if (features.includes("엑셀 업로드")) assets.push("excel-import");
+      return [...new Set(assets)];
+    }
+
+    function recommendStack(platforms, domain) {
+      const hasDesktop = platforms.includes("PC 설치형 프로그램");
+      const hasMobileApp = platforms.includes("Android 앱") || platforms.includes("iPhone 앱");
+      if (hasDesktop) return "React + Vite + Express + PostgreSQL + Electron 확장 고려";
+      if (hasMobileApp) return "Next.js 또는 React + Expo/React Native + PostgreSQL";
+      if (["B2B 거래", "지역 거래 플랫폼", "오디션/지원자 매칭"].includes(domain)) return "Next.js + PostgreSQL + Prisma 권장";
+      return "React + Vite + Express + PostgreSQL 권장";
+    }
+
+    function folderStructure(platforms) {
+      const desktop = platforms.includes("PC 설치형 프로그램") ? "    desktop-app/\n" : "";
+      const mobileApp = platforms.includes("Android 앱") || platforms.includes("iPhone 앱") ? "    mobile-app/\n" : "";
+      return `project-name/\n  apps/\n    web-pc/\n    web-mobile/\n${mobileApp}${desktop}\n  packages/\n    shared-ui/\n    shared-api/\n    shared-types/\n    design-system/\n\n  features/\n    selected-feature-modules/\n\n  server/\n    apis/\n    db/\n    services/\n    auth/\n    permissions/\n    storage/\n\n  docs/\n    architecture.md\n    figma-flow.md\n    cursor-prompt.md`;
+    }
+
+    function generateStarter() {
+      const projectName = value("projectName") || "신규 프로젝트";
+      const oneLine = value("oneLine") || "새로운 업무형 서비스";
+      const problem = value("problem") || "현재 수작업과 흩어진 자료 관리로 인해 업무 효율이 떨어진다.";
+      const domain = value("domain");
+      const users = selected("users");
+      const platforms = selected("platforms");
+      const features = selected("features");
+      const figma = selected("figma");
+      const assets = recommendAssets(features);
+      const stack = recommendStack(platforms, domain);
+      const style = value("style");
+      const firstPlatform = value("firstPlatform");
+      const permissionText = value("permissionText") || "관리자는 전체를 관리하고, 담당자는 본인 또는 배정된 자료만 보며, 고객은 본인 자료만 본다.";
+      const mustHave = value("mustHave") || "핵심 사용자가 주요 업무를 처음부터 끝까지 수행할 수 있어야 한다.";
+      const later = value("later") || "결제, 고급 통계, 복잡한 자동화는 나중에 붙인다.";
+      const folders = folderStructure(platforms);
+
+      const figmaPrompt = `프로젝트명: ${projectName}\n서비스 설명: ${oneLine}\n주요 사용자: ${users.join(", ") || "관리자, 담당자, 고객"}\n필요 플랫폼: ${platforms.join(", ") || "PC 웹, 모바일 웹"}\n필요 기능: ${features.join(", ") || "고객관리, 파일관리, 메시지"}\n디자인 방향: ${style}\n\n요청:\n- 서비스 전체 구조도를 만들어줘.\n- 사용자 이동 흐름도를 만들어줘.\n- PC 관리자 화면과 모바일 고객 화면을 분리해서 와이어프레임을 만들어줘.\n- 버튼 클릭 시 이동 흐름을 프로토타입으로 연결해줘.\n- 개발자가 라우트와 컴포넌트 구조로 옮길 수 있게 화면 이름을 명확히 표시해줘.`;
+
+      const cursorPrompt = `새 프로젝트를 시작한다.\n\n프로젝트명: ${projectName}\n목적: ${oneLine}\n문제: ${problem}\n업종: ${domain}\n대상 사용자: ${users.join(", ") || "관리자, 담당자, 고객"}\n선택 플랫폼: ${platforms.join(", ") || "PC 웹, 모바일 웹"}\n우선 개발: ${firstPlatform}\n기술 스택: ${stack}\n적용 기술 자산: ${assets.join(", ") || "필요 기능 기준으로 선택"}\n\n기본 원칙:\n1. PC와 모바일 화면은 처음부터 분리한다.\n2. 공통 로직, 타입, API 클라이언트, 디자인 토큰만 shared로 분리한다.\n3. 권한 구조를 기능 개발 전에 먼저 정의한다.\n4. 디자인 시스템 토큰을 먼저 만들고 화면 개발에 적용한다.\n5. Figma 시안이 있는 경우 화면 구조와 이동 흐름은 Figma를 기준으로 한다.\n6. 기존 프로젝트 코드를 통째로 복사하지 않고 기술자산보관소의 기능 문서를 기준으로 최소 단위로 적용한다.\n\n1차 MVP 필수 목표:\n${mustHave}\n\n나중에 할 것:\n${later}\n\n권한 기준:\n${permissionText}\n\n먼저 수행할 일:\n1. 프로젝트 폴더 구조 생성\n2. 플랫폼별 진입점 생성\n3. 권한 구조 초안 작성\n4. 디자인 토큰 생성\n5. 핵심 라우트 구조 생성\n6. 1차 MVP 기능 개발 순서 문서화`;
+
+      latestMarkdown = `# ${projectName} 스타터 결과\n\n## 프로젝트 요약\n\n${oneLine}\n\n문제: ${problem}\n\n업종: ${domain}\n\n## 사용자\n\n${mdList(users)}\n\n## 플랫폼\n\n${mdList(platforms)}\n\n우선 개발: ${firstPlatform}\n\n## 권한 구조\n\n${permissionText}\n\n## 선택 기능\n\n${mdList(features)}\n\n## 적용 기술 자산\n\n${mdList(assets)}\n\n## 추천 기술 스택\n\n${stack}\n\n## 추천 폴더 구조\n\n\`\`\`text\n${folders}\n\`\`\`\n\n## Figma 프롬프트\n\n\`\`\`text\n${figmaPrompt}\n\`\`\`\n\n## Cursor 지시문\n\n\`\`\`text\n${cursorPrompt}\n\`\`\`\n`;
+
+      document.getElementById("result").innerHTML = `
+        <div class="result-card">
+          <h3>프로젝트 요약</h3>
+          <p><strong>${escapeHtml(projectName)}</strong></p>
+          <p>${escapeHtml(oneLine)}</p>
+          <p class="hint">문제: ${escapeHtml(problem)}</p>
+        </div>
+        <div class="result-card">
+          <h3>사용자 / 플랫폼</h3>
+          <p>사용자</p><div class="badge-row">${list(users, "관리자/담당자/고객")}</div>
+          <p>플랫폼</p><div class="badge-row">${list(platforms, "PC 웹/모바일 웹")}</div>
+        </div>
+        <div class="result-card">
+          <h3>권한 구조</h3>
+          <p>${escapeHtml(permissionText)}</p>
+        </div>
+        <div class="result-card">
+          <h3>적용할 기술 자산</h3>
+          <div class="badge-row">${list(assets, "선택 기능 기준으로 추후 결정")}</div>
+        </div>
+        <div class="result-card">
+          <h3>추천 기술 스택</h3>
+          <p>${escapeHtml(stack)}</p>
+        </div>
+        <div class="result-card">
+          <h3>추천 폴더 구조</h3>
+          <pre>${escapeHtml(folders)}</pre>
+        </div>
+        <div class="result-card">
+          <h3>Figma 프롬프트</h3>
+          <pre>${escapeHtml(figmaPrompt)}</pre>
+        </div>
+        <div class="result-card">
+          <h3>Cursor 실행 지시문</h3>
+          <pre>${escapeHtml(cursorPrompt)}</pre>
+        </div>
+      `;
+
+      showToast("결과가 생성되었습니다.");
+    }
+
+    async function copyMarkdown() {
+      if (!latestMarkdown) {
+        generateStarter();
+      }
+      await navigator.clipboard.writeText(latestMarkdown);
+      showToast("결과 Markdown이 복사되었습니다.");
+    }
+
+    function resetForm() {
+      document.querySelectorAll("input[type='text'], textarea").forEach(el => el.value = "");
+      document.querySelectorAll("input[type='checkbox']").forEach(el => el.checked = false);
+      document.getElementById("domain").value = "일반 업무관리";
+      document.getElementById("firstPlatform").value = "PC 관리자 화면부터";
+      document.getElementById("style").value = "깔끔한 업무용 화면";
+      document.getElementById("result").innerHTML = '<div class="empty">입력 후 <strong>결과 생성</strong>을 누르세요.</div>';
+      latestMarkdown = "";
+      showToast("초기화되었습니다.");
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 1800);
+    }
+  </script>
+</body>
+</html>
